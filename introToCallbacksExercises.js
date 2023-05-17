@@ -9,8 +9,10 @@ You'll also need to schedule a Clock.prototype._tick callback that updates the t
 class Clock {
   constructor() {  
     // 1. Create a Date object.
+    // we only need to create this object once to get the time
         const date = new Date()
     // 2. Store the hours, minutes, and seconds.
+    // mkae sure to assign then to "this"
         this.hours = date.getHours();
         this.minutes = date.getMinutes();
         this.seconds = date.getSeconds();
@@ -21,16 +23,27 @@ class Clock {
 
   }
 
+  // this is a method
   printTime() {
     // Format the time in HH:MM:SS
     // Use console.log to print it.
     console.log(`${this.hours}:${this.minutes}:${this.seconds}`);
   }
 
+  // this is a prototype
   _tick() {
     // 1. Increment the time by one second.
     // 2. Call printTime.
-    if (this.seconds === 60)
+    this.seconds++
+    if (this.seconds === 60) {
+        this.seconds = 0;
+        this.minutes++;
+        if(this.minutes === 60) {
+            this.minutes = 0;
+            this.hours = (this.hours + 1) % 24;
+        }
+    }
+    this.printTime();
   }
 }
 
@@ -41,7 +54,10 @@ addNumbers
 Let's write a function that will read several numbers, one after another, and sum up the total. After each number, let's print out the partial sums along the way, and pass the total sum to a callback when done.
 
 First off, use readline.createInterface to create a global variable, reader. Use process.stdin/process.stdout like I do in my examples. Make sure to only use one instance of a reader and only close it once.
+*/
 
+
+/*
 Next, write a function, addNumbers(sum, numsLeft, completionCallback):
 
 If numsLeft > 0, then:
@@ -58,8 +74,24 @@ If numsLeft === 0, call completionCallback(sum) so that the total sum can be use
 */
 //To test, try out:
 
+const readline = require("readline");
+const reader = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+
+
+function addNumbers(sum, numsleft, completionCallback) {
+    if (numsleft > 0) {
+        const response = reader.
+    }
+}
+
+.question(prompt, callback)
+
 // addNumbers(0, 3, sum => console.log(`Total Sum: ${sum}`));
-This should prompt for three numbers, printing out the partial sums and then the final, total sum.
+// This should prompt for three numbers, printing out the partial sums and then the final, total sum.
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
@@ -74,25 +106,25 @@ Assume the method you're binding doesn't take any arguments; we'll see tomorrow 
 How would you test your "bind" method out? Try out this example code:
 */
 
-class Lamp {
-  constructor() {
-    this.name = "a lamp";
-  }
-}
+// class Lamp {
+//   constructor() {
+//     this.name = "a lamp";
+//   }
+// }
 
-const turnOn = function() {
-  console.log("Turning on " + this.name);
-};
+// const turnOn = function() {
+//   console.log("Turning on " + this.name);
+// };
 
-const lamp = new Lamp();
+// const lamp = new Lamp();
 
-turnOn(); // should not work the way we want it to
+// turnOn(); // should not work the way we want it to
 
-const boundTurnOn = turnOn.bind(lamp);
-const myBoundTurnOn = turnOn.myBind(lamp);
+// const boundTurnOn = turnOn.bind(lamp);
+// const myBoundTurnOn = turnOn.myBind(lamp);
 
-boundTurnOn(); // should say "Turning on a lamp"
-myBoundTurnOn(); // should say "Turning on a lamp"
+// boundTurnOn(); // should say "Turning on a lamp"
+// myBoundTurnOn(); // should say "Turning on a lamp"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
@@ -126,13 +158,13 @@ To kick things off, absurdBubbleSort should call outerBubbleSortLoop(true). This
 Here's a code skeleton:
 */
 
-const readline = require("readline");
-const { setInterval } = require("timers/promises");
+// const readline = require("readline");
+// const { setInterval } = require("timers/promises");
 
-const reader = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
+// const reader = readline.createInterface({
+//   input: process.stdin,
+//   output: process.stdout
+// });
 
 // Write this first.
 function askIfGreaterThan(el1, el2, callback) {
@@ -163,10 +195,10 @@ function absurdBubbleSort(arr, sortCompletionCallback) {
   // Kick the first outer loop off, starting `madeAnySwaps` as true.
 }
 
-absurdBubbleSort([3, 2, 1], function(arr) {
-  console.log("Sorted array: " + JSON.stringify(arr));
-  reader.close();
-});
+// absurdBubbleSort([3, 2, 1], function(arr) {
+//   console.log("Sorted array: " + JSON.stringify(arr));
+//   reader.close();
+// });
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 /*
@@ -184,33 +216,33 @@ invoke the original function with the original arguments.
 Once you think you have it working, try the following example code:
 */
 
-class Neuron {
-  fire() {
-    console.log("Firing!");
-  }
-}
+// class Neuron {
+//   fire() {
+//     console.log("Firing!");
+//   }
+// }
 
-const neuron = new Neuron();
+// const neuron = new Neuron();
 // When we create a new Neuron,
 // we can call #fire as frequently as we want
 
 // The following code will try to #fire the neuron every 10ms. Try it in the console:
-const interval = setInterval(() => {
-  neuron.fire();
-}, 10);
+// const interval = setInterval(() => {
+//   neuron.fire();
+// }, 10);
 
 // You can use clearInterval to stop the firing:
-clearInterval(interval);
+// clearInterval(interval);
 
 // Using Function#myThrottle, we should be able to throttle
 // the #fire function of our neuron so that it can only fire
 // once every 500ms:
 
-neuron.fire = neuron.fire.myThrottle(500);
+// neuron.fire = neuron.fire.myThrottle(500);
 
-const interval = setInterval(() => {
-  neuron.fire();
-}, 10);
+// const interval = setInterval(() => {
+//   neuron.fire();
+// }, 10);
 
 // This time, if our Function#myThrottle worked correctly,
 // the Neuron#fire function should only be able to execute
@@ -219,15 +251,15 @@ const interval = setInterval(() => {
 
 // If we want this behavior for ALL neurons, we can do the same logic in the constructor:
 
-class Neuron {
-  constructor() {
-    this.fire = this.fire.myThrottle(500);
-  }
+// class Neuron {
+//   constructor() {
+//     this.fire = this.fire.myThrottle(500);
+//   }
 
-  fire() {
-    console.log("Firing!");
-  }
-}
+//   fire() {
+//     console.log("Firing!");
+//   }
+// }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
