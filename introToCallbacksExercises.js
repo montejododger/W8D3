@@ -47,7 +47,7 @@ class Clock {
   }
 }
 
-const clock = new Clock();
+// const clock = new Clock();
 /////////////////////////////////////////////////////////////////////////////////////////
 /*
 addNumbers
@@ -80,17 +80,29 @@ const reader = readline.createInterface({
     output: process.stdout
 });
 
-
+// .number(prompt, callback)
 
 function addNumbers(sum, numsleft, completionCallback) {
     if (numsleft > 0) {
-        const response = reader.
-    }
-}
+        const response = reader.question('Input a number: ', function(input) {
+          const newNum = parseInt(input);
+          sum += newNum;
+          addNumbers(sum, numsleft-1, completionCallback);
+          console.log(sum);
+        });
+    } else {
+      reader.close();
+        completionCallback(sum);
+        }
+      };
 
-.question(prompt, callback)
+      function completionCallback(totalSum) {
+        console.log(`Total Sum: ${totalSum}`);
+      }
 
-// addNumbers(0, 3, sum => console.log(`Total Sum: ${sum}`));
+// .question(prompt, callback)
+
+addNumbers(0, 3, sum => console.log(`Total Sum: ${sum}`));
 // This should prompt for three numbers, printing out the partial sums and then the final, total sum.
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
