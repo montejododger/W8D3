@@ -154,7 +154,7 @@ const turnOn = function() {
 
 const lamp = new Lamp();
 
-turnOn(); // should not work the way we want it to
+// turnOn(); // should not work the way we want it to
 
 const boundTurnOn = turnOn.bind(lamp);
 const myBoundTurnOn = turnOn.myBind(lamp);
@@ -197,22 +197,32 @@ Here's a code skeleton:
 // Prompt user to tell us whether el1 > el2; pass true back to the
 // callback if true; else false.
 
+
 const readline = require("readline");
 const { setInterval } = require("timers/promises");
 
 const reader = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
+    input: process.stdin,
+    output: process.stdout
 });
 
 function askIfGreaterThan(el1, el2, callback) {
-  reader.question(`Is ${el1} greater than ${el2}? Enter true or false: `, function(input) {
-    callback(input);
-    reader.close();
-});
-};
+    reader.question(`Is ${el1} greater than ${el2}? Enter true or false: `, function(input) {
+      const response = input.trim();
+      if (response === 'true') {
+        callback(true);
+      } else {
+        callback(false);
+      }
+      reader.close();
+    });
+  }
 
-// askIfGreaterThan(2,1)
+  function comparison(result) {
+      console.log('result:', result);
+    }
+    
+askIfGreaterThan(2,1, comparison)
 
 // Once you're done testing askIfGreaterThan with dummy arguments, write this.
 function innerBubbleSortLoop(arr, i, madeAnySwaps, outerBubbleSortLoop) {

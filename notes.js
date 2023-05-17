@@ -5,7 +5,7 @@ const rl = readline.createInterface({
 });
 
 
-.question(prompt, callback)
+// .question(prompt, callback)
 
 
 // What is wrong with the following code?
