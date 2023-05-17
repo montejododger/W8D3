@@ -222,7 +222,7 @@ function askIfGreaterThan(el1, el2, callback) {
       console.log('result:', result);
     }
     
-askIfGreaterThan(2,1, comparison)
+// askIfGreaterThan(2,1, comparison)
 
 // Once you're done testing askIfGreaterThan with dummy arguments, write this.
 
@@ -240,7 +240,9 @@ function innerBubbleSortLoop(arr, i, madeAnySwaps, outerBubbleSortLoop) {
     outerBubbleSortLoop(madeAnySwaps);
       }
     }
-    
+
+    innerBubbleSortLoop([2,1,3,5], 0, false)
+
   // 1. If (i == arr.length - 1), call outerBubbleSortLoop, letting it know whether any swap was made.
 
   // 2. Else, use `askIfGreaterThan` to compare `arr[i]` and `arr[i +
