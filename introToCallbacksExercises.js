@@ -80,29 +80,28 @@ const reader = readline.createInterface({
     output: process.stdout
 });
 
-// .number(prompt, callback)
+// .question(prompt, callback)
 
 function addNumbers(sum, numsleft, completionCallback) {
     if (numsleft > 0) {
         const response = reader.question('Input a number: ', function(input) {
-          const newNum = parseInt(input);
-          sum += newNum;
-          addNumbers(sum, numsleft-1, completionCallback);
-          console.log(sum);
+        const newNum = parseInt(input);
+        sum += newNum;
+        addNumbers(sum, numsleft-1, completionCallback);
+        console.log(sum);
         });
     } else {
-      reader.close();
+        reader.close();
         completionCallback(sum);
         }
-      };
+    };
 
-      function completionCallback(totalSum) {
+    function completionCallback(totalSum) {
         console.log(`Total Sum: ${totalSum}`);
-      }
+    }
 
-// .question(prompt, callback)
 
-addNumbers(0, 3, sum => console.log(`Total Sum: ${sum}`));
+// addNumbers(0, 3, sum => console.log(`Total Sum: ${sum}`));
 // This should prompt for three numbers, printing out the partial sums and then the final, total sum.
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,28 +114,53 @@ The arrow function captures this and context.
 In the anonymous function, call Function.prototype.apply on this, passing the context.
 Assume the method you're binding doesn't take any arguments; we'll see tomorrow how to use the rest and spread operators to fix this.
 
-How would you test your "bind" method out? Try out this example code:
+How would you test your "bind" method out? 
+
+Bind
+bind is a function we invoke on a function
+Pass in desired context (and sometimes arguments we'll bind)
+bind returns a new function with the context permanently bound
+Unlike call/apply, DOES NOT immediately invoke the function
+This bound function will always have the context set, so we can invoke it function-style without a problem!
+NOTE: Bind is not a way to invoke a function! It's not invoked until later!
+
+Try out this example code:
 */
 
-// class Lamp {
-//   constructor() {
-//     this.name = "a lamp";
-//   }
-// }
+// save the value of the current function (this)
+// return a new annon function 
+// the new anonymous function should return the value of of the orginal (this) value applied to the context
 
-// const turnOn = function() {
-//   console.log("Turning on " + this.name);
-// };
+Function.prototype.myBind = function(context) {
+    // this is only to save the value of the original (this)
+    const value = this;
 
-// const lamp = new Lamp();
+    // non - arrow
+    // creates an anonymous function that will return the orginal functions value
+    return function() {
+        value.call(context);
+    };
+};
 
-// turnOn(); // should not work the way we want it to
+class Lamp {
+  constructor() {
+    this.name = "a lamp";
+  }
+}
 
-// const boundTurnOn = turnOn.bind(lamp);
-// const myBoundTurnOn = turnOn.myBind(lamp);
+const turnOn = function() {
+  console.log("Turning on " + this.name);
+};
 
-// boundTurnOn(); // should say "Turning on a lamp"
-// myBoundTurnOn(); // should say "Turning on a lamp"
+const lamp = new Lamp();
+
+turnOn(); // should not work the way we want it to
+
+const boundTurnOn = turnOn.bind(lamp);
+const myBoundTurnOn = turnOn.myBind(lamp);
+
+boundTurnOn(); // should say "Turning on a lamp"
+myBoundTurnOn(); // should say "Turning on a lamp"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
