@@ -74,11 +74,11 @@ If numsLeft === 0, call completionCallback(sum) so that the total sum can be use
 */
 //To test, try out:
 
-const readline = require("readline");
-const reader = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
+// const readline = require("readline");
+// const reader = readline.createInterface({
+//     input: process.stdin,
+//     output: process.stdout
+// });
 
 // .question(prompt, callback)
 
@@ -159,8 +159,8 @@ turnOn(); // should not work the way we want it to
 const boundTurnOn = turnOn.bind(lamp);
 const myBoundTurnOn = turnOn.myBind(lamp);
 
-boundTurnOn(); // should say "Turning on a lamp"
-myBoundTurnOn(); // should say "Turning on a lamp"
+// boundTurnOn(); // should say "Turning on a lamp"
+// myBoundTurnOn(); // should say "Turning on a lamp"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
@@ -193,20 +193,26 @@ To kick things off, absurdBubbleSort should call outerBubbleSortLoop(true). This
 
 Here's a code skeleton:
 */
-
-// const readline = require("readline");
-// const { setInterval } = require("timers/promises");
-
-// const reader = readline.createInterface({
-//   input: process.stdin,
-//   output: process.stdout
-// });
-
 // Write this first.
+// Prompt user to tell us whether el1 > el2; pass true back to the
+// callback if true; else false.
+
+const readline = require("readline");
+const { setInterval } = require("timers/promises");
+
+const reader = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
 function askIfGreaterThan(el1, el2, callback) {
-  // Prompt user to tell us whether el1 > el2; pass true back to the
-  // callback if true; else false.
-}
+  reader.question(`Is ${el1} greater than ${el2}? Enter true or false: `, function(input) {
+    callback(input);
+    reader.close();
+});
+};
+
+// askIfGreaterThan(2,1)
 
 // Once you're done testing askIfGreaterThan with dummy arguments, write this.
 function innerBubbleSortLoop(arr, i, madeAnySwaps, outerBubbleSortLoop) {
