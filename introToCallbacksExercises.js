@@ -206,6 +206,8 @@ const reader = readline.createInterface({
     output: process.stdout
 });
 
+// .question(message, callback)
+
 function askIfGreaterThan(el1, el2, callback) {
     reader.question(`Is ${el1} greater than ${el2}? Enter true or false: `, function(input) {
       const response = input.trim();
@@ -214,13 +216,9 @@ function askIfGreaterThan(el1, el2, callback) {
       } else {
         callback(false);
       }
-      reader.close();
+    //   reader.close();
     });
   }
-
-  function comparison(result) {
-      console.log('result:', result);
-    }
     
 // askIfGreaterThan(2,1, comparison)
 
@@ -234,14 +232,13 @@ function innerBubbleSortLoop(arr, i, madeAnySwaps, outerBubbleSortLoop) {
         [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
         madeAnySwaps = true; 
       }
-      innerBubbleSortLoop(arr, i + 1, i, madeAnySwaps, outerBubbleSortLoop); 
+      innerBubbleSortLoop(arr, i + 1, madeAnySwaps, outerBubbleSortLoop); 
     });
   } else {
     outerBubbleSortLoop(madeAnySwaps);
       }
     }
 
-    innerBubbleSortLoop([2,1,3,5], 0, false)
 
   // 1. If (i == arr.length - 1), call outerBubbleSortLoop, letting it know whether any swap was made.
 
@@ -257,17 +254,27 @@ function innerBubbleSortLoop(arr, i, madeAnySwaps, outerBubbleSortLoop) {
 
 function absurdBubbleSort(arr, sortCompletionCallback) {
   function outerBubbleSortLoop(madeAnySwaps) {
-    // Begin an inner loop if you made any swaps. Otherwise, call
-    // `sortCompletionCallback`.
-  }
+    if (madeAnySwaps) {
+        // Begin an inner loop if you made any swaps.
+        innerBubbleSortLoop(arr, 0, false, outerBubbleSortLoop);
+    } else {
+        // else `sortCompletionCallback`.
+        sortCompletionCallback(arr);
+    }
+    // Kick the first outer loop off, starting `madeAnySwaps` as true.
+    outerBubbleSortLoop(true);
+}
+reader.close();
 
-  // Kick the first outer loop off, starting `madeAnySwaps` as true.
+}
+// TEST
+const arr = [5, 3, 8, 2, 1];
+
+function sortCompletionCallback(sortedArr) {
+  console.log('Sorted array:', sortedArr);
 }
 
-// absurdBubbleSort([3, 2, 1], function(arr) {
-//   console.log("Sorted array: " + JSON.stringify(arr));
-//   reader.close();
-// });
+absurdBubbleSort(arr, sortCompletionCallback);
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 /*
